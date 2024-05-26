@@ -7,10 +7,17 @@ import ProjectsPage from './pages/ProjectsPage';
 import ContactPage from './pages/ContactPage';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
+import SearchPage from './pages/SearchPage';
 
-const photos = [];
+const photos = [
+  {id: 1, url: '', title: ''},
+  {id: 2, url: '', title: ''},
+];
 
-const projects = [];
+const projects = [
+  { id: 1, title: 'Project 1', photos: [{ id: 1, url: 'path_to_photo1.jpg', title: 'Photo 1' }] },
+    { id: 2, title: 'Project 2', photos: [{ id: 2, url: 'path_to_photo2.jpg', title: 'Photo 2' }] },
+];
 
 function App() {
   return (
@@ -23,6 +30,7 @@ function App() {
         <Route path="/contact" element={<ContactPage/>}/>
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/search" element={<SearchPage photos={photos} />} />
       </Routes>
     </Router>
   );
