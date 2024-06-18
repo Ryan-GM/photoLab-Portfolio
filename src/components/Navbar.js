@@ -4,13 +4,14 @@ import {Navbar, Nav, Container, Form, FormControl, Button} from 'react-bootstrap
 import {FaSearch} from 'react-icons/fa';
 
 const NavigationBar = () =>{
-    const [searchQuery, setSearchQuery] = useState('');
-    const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState(''); // necessary for managing the search query state.
+    const navigate = useNavigate(); // used for navigation after performing a search.
 
     const handleSearch = (e) =>{
         e.preventDefault();
         if(searchQuery.trim()){
-            navigate(`/search?query=${searchQuery}`);
+            navigate(`/explore?query=${searchQuery}`);
+            setSearchQuery('');
         }
     };
 
@@ -22,17 +23,19 @@ const NavigationBar = () =>{
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/">Home</Nav.Link>
-                        <Nav.Link as={Link} to="/about">About</Nav.Link>
-                        <Nav.Link as={Link} to="/projects">Projects</Nav.Link>
+                        <Nav.Link as={Link} to="/explore">Explore</Nav.Link>
+                        <Nav.Link as={Link} to="/blog">Blog</Nav.Link>
                         <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
-                        <Nav.Link as={Link} to="/signup">Signup</Nav.Link>
-                        <Nav.Link as={Link} to="/login">Login</Nav.Link>
                     </Nav>
                     <Form className='d-flex' onSubmit={handleSearch}>
                         <FormControl type='search' placeholder='Search' className='me-2' aria-label='Search'
                         value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
                         <Button variant='outline-success'><FaSearch/></Button>
                     </Form>
+                    <Nav>
+                        
+                        <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                    </Nav>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
