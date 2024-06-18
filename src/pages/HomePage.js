@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import { Container, Row, Col, Button, Tabs, Tab, Card, Form, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import UploadButton from '../components/UploadButton';
+// import UploadButton from '../components/UploadButton';
 import { FaHeart, FaSave, FaComment } from 'react-icons/fa';
+import './HomePage.css';
 
 
 const initialFeaturedProjects = {
