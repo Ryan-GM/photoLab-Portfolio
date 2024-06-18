@@ -1,0 +1,21 @@
+.photo-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.photo-card .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.photo-card .card-title {
+    margin-bottom: auto;
+}
+
+.photo-card .card-buttons {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
