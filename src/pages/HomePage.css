@@ -4,6 +4,12 @@
     height: 100%;
 }
 
+.photo-card .card-img-top{
+    flex-shrink: 0;
+    height: 200px;
+    object-fit: cover;
+}
+
 .photo-card .card-body {
     flex-grow: 1;
     display: flex;
@@ -17,5 +23,5 @@
 .photo-card .card-buttons {
     margin-top: 10px;
     display: flex;
-    justify-content: space-between;
+    gap: 10px;
 }
