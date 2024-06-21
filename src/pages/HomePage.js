@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import { Container, Row, Col, Button, Tabs, Tab, Card, Form, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 // import UploadButton from '../components/UploadButton';
@@ -8,28 +8,28 @@ import './HomePage.css';
 
 const initialFeaturedProjects = {
     people: [
-        { id: 1, title: 'People Photo 1', imgUrl: '/assets/imgs/people/images.jpg' },
-        { id: 2, title: 'People Photo 2', imgUrl: '/assets/imgs/people/kenia-strassenszene-nairobi-1920-data.jpg' },
-        { id: 3, title: 'People Photo 3', imgUrl: '/assets/imgs/people/Malaika-Firth-Prada.jpg' },
-        { id: 4, title: 'People Photo 4', imgUrl: '/assets/imgs/people/People-walk-at-a-taxi-rank-JBG.jpeg' },
-        { id: 5, title: 'People Photo 3', imgUrl: '/assets/imgs/people/unnamed.jpg' },
-        { id: 6, title: 'People Photo 4', imgUrl: '/assets/imgs/people/zulu-kids.jpg' },
+        { id: 1, imgUrl: '/assets/imgs/people/images.jpg' },
+        { id: 2, imgUrl: '/assets/imgs/people/kenia-strassenszene-nairobi-1920-data.jpg' },
+        { id: 3, imgUrl: '/assets/imgs/people/Malaika-Firth-Prada.jpg' },
+        { id: 4, imgUrl: '/assets/imgs/people/People-walk-at-a-taxi-rank-JBG.jpeg' },
+        { id: 5, imgUrl: '/assets/imgs/people/unnamed.jpg' },
+        { id: 6, imgUrl: '/assets/imgs/people/zulu-kids.jpg' },
     ],
     nature: [
-        { id: 7, title: 'Nature Photo 1', imgUrl: '/assets/imgs/nature/6-Lake-nakuru.jpg' },
-        { id: 8, title: 'Nature Photo 2', imgUrl: '/assets/imgs/nature/386104-svetik.jpg' },
-        { id: 9, title: 'Nature Photo 3', imgUrl: '/assets/imgs/nature/Aberdare.jpeg' },
-        { id: 10, title: 'Nature Photo 4', imgUrl: '/assets/imgs/nature/istockphoto-1074106404-612x612.jpg' },
-        { id: 11, title: 'Nature Photo 5', imgUrl: '/assets/imgs/nature/kenya-2110743_1280.jpg' },
-        { id: 12, title: 'Nature Photo 6', imgUrl: '/assets/imgs/nature/Walk in Masai Mara-mobile.jpg' },
+        { id: 7, imgUrl: '/assets/imgs/nature/6-Lake-nakuru.jpg' },
+        { id: 8, imgUrl: '/assets/imgs/nature/386104-svetik.jpg' },
+        { id: 9, imgUrl: '/assets/imgs/nature/Aberdare.jpeg' },
+        { id: 10, imgUrl: '/assets/imgs/nature/istockphoto-1074106404-612x612.jpg' },
+        { id: 11, imgUrl: '/assets/imgs/nature/kenya-2110743_1280.jpg' },
+        { id: 12, imgUrl: '/assets/imgs/nature/Walk in Masai Mara-mobile.jpg' },
     ],
     adventure: [
-        { id: 13, title: 'Adventure Photo 1', imgUrl: '/assets/imgs/adventure/kayacking.jpg' },
-        { id: 14, title: 'Adventure Photo 2', imgUrl: '/assets/imgs/adventure/kenyan-adventures.jpeg' },
-        { id: 15, title: 'Adventure Photo 1', imgUrl: '/assets/imgs/adventure/many-people.jpeg' },
-        { id: 16, title: 'Adventure Photo 2', imgUrl: '/assets/imgs/adventure/motor-tours.jpg' },
-        { id: 17, title: 'Adventure Photo 1', imgUrl: '/assets/imgs/adventure/paragliding.jpg' },
-        { id: 18, title: 'Adventure Photo 2', imgUrl: '/assets/imgs/adventure/sun-jumping.jpg' },
+        { id: 13, imgUrl: '/assets/imgs/adventure/kayacking.jpg' },
+        { id: 14, imgUrl: '/assets/imgs/adventure/kenyan-adventures.jpeg' },
+        { id: 15, imgUrl: '/assets/imgs/adventure/many-people.jpeg' },
+        { id: 16, imgUrl: '/assets/imgs/adventure/motor-tours.jpg' },
+        { id: 17, imgUrl: '/assets/imgs/adventure/paragliding.jpg' },
+        { id: 18, imgUrl: '/assets/imgs/adventure/sun-jumping.jpg' },
     ],
 };
 
@@ -43,6 +43,7 @@ const HomePage = () =>{
     const [newCategory, setNewCategory] = useState('');
     const [newCategoryImage, setNewCategoryImage] = useState(null);
     const [showComments, setShowComments] = useState({});
+    const fileInputRef = useRef(null);
 
     const handleLike = (id) => {
         setLikes((prevLikes) => ({
@@ -85,6 +86,9 @@ const HomePage = () =>{
                 ],
             }));
             setNewCategoryImage(null);
+            if(fileInputRef.current) {
+                fileInputRef.current.value = null;
+            }
         }
     };
 
@@ -97,11 +101,12 @@ const HomePage = () =>{
 
     const renderCard = (project) => (
         <Col key={project.id} md={4} className="mb-4">
-            <Card>
+            <Card className='photo-card'>
                 <Card.Img variant="top" src={project.imgUrl} onError={(e) => console.error(`Error loading image: ${e.target.src}`)} />
                 <Card.Body>
                     <Card.Title>{project.title}</Card.Title>
-                    <Button variant="link" onClick={() => handleLike(project.id)}>
+                    <div className='card-buttons'>
+                        <Button variant="link" onClick={() => handleLike(project.id)}>
                         <FaHeart className="me-2 mr-1" /> {likes[project.id] || 0}
                     </Button>
                     <Button variant="link" onClick={() => handleFavorite(project.id)}>
@@ -110,6 +115,8 @@ const HomePage = () =>{
                     <Button variant='link' onClick={() => handleToggleComments(project.id)}>
                         <FaComment/>
                     </Button>
+                    </div>
+                    
                     {showComments[project.id] && (
                         <>
                         <Form className="mt-3" onSubmit={(e) => {
