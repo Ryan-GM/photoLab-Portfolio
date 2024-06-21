@@ -17,16 +17,19 @@ const ExplorePage = () => {
 
     useEffect(() => {
         const fetchPhotos = async () => {
-            
+            setLoading(true);
             try{
-                const response = await axios.get('https://api.unsplash.com/photos', {
-                    params:{per_page: 12},
+                const url = searchQuery ? 'https://api.unsplash.com/search/photos' : 'https://api.unsplash.com/photos';
+                const params =searchQuery ? {query: searchQuery, per_page: 12} : {per_page: 12};
+                const response = await axios.get(url, {
+                    params: params,
                     headers:{
                         Authorization: `Client-ID dAHxX41D_ACU3R1rTmuCDyxuUKxrZaJesPZCM6o4omA`
-                    }
+                    },
                 });
+                const data = searchQuery ? response.data.results : response.data;
                 console.log('API Response:', response.data)
-                setPhotos(response.data);
+                setPhotos(data);
                 setLoading(false);
             } catch(error){
                 console.error('Error fetching photos:', error);
@@ -34,28 +37,6 @@ const ExplorePage = () => {
             }
         };
         fetchPhotos();
-    }, []);
-
-    useEffect(() => {
-        const fetchSearchPhotos = async () => {
-            if(!searchQuery) return;
-
-            setLoading(true);
-            try{
-                const response = await axios.get('https//api.unsplash.com/search/photos',{
-                    params: {query: searchQuery, per_page: 12},
-                    header:{
-                        Authorization: `Client-ID dAHxX41D_ACU3R1rTmuCDyxuUKxrZaJesPZCM6o4omA`
-                    }
-                });
-                setPhotos(response.data.results);
-                setLoading(false);
-            } catch(error){
-                console.error('Error fetching search photos:', error);
-                setLoading(false);
-            }
-        };
-        fetchSearchPhotos();
     }, [searchQuery]);
     
     const filteredPhotos = searchQuery
@@ -68,6 +49,7 @@ const ExplorePage = () => {
 
     console.log('Search Query:', searchQuery);
     console.log('Filtered Photos:', filteredPhotos);
+    
     return (
         <Container className='mt-5'>
             <h2>Explore</h2>
